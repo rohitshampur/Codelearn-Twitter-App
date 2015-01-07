@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Codelearn Twitter App</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_twitter">Hello Twitter</string>
+    <string name="lbl_username">Username</string>
+    <string name="lbl_entr_username">Enter Username</string>
+    <string name="lbl_paswrd">Password</string>
+    <string name="lbl_enter_paswrd">Enter Password</string>
+    <string name="lbl_login">Login</string>
+    <string name="title_activity_tewwt_list">TewwtListActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_tweet_list">TweetListActivity</string>
+    <string name="no_tweet_found">No tweet found</string>
+    <string name="title_activity_tweet_detail">TweetDetailActivity</string>
+
+</resources>
