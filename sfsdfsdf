@@ -1,0 +1,131 @@
+[33mcommit b607e0024e92dd4af4c9438496d058b8865835ab[m
+Author: Rohit <Rohit>
+Date:   Wed Jan 7 19:15:02 2015 +0530
+
+    completed the ListView of tweets
+
+[1mdiff --git a/bin/CodelearnTwitterApp.apk b/bin/CodelearnTwitterApp.apk[m
+[1mindex 9f2c816..793e8b5 100644[m
+Binary files a/bin/CodelearnTwitterApp.apk and b/bin/CodelearnTwitterApp.apk differ
+[1mdiff --git a/bin/classes.dex b/bin/classes.dex[m
+[1mindex 5e98e88..3f9b79b 100644[m
+Binary files a/bin/classes.dex and b/bin/classes.dex differ
+[1mdiff --git a/bin/classes/org/codelearn/twitter/TweetAdapter$TweetView.class b/bin/classes/org/codelearn/twitter/TweetAdapter$TweetView.class[m
+[1mnew file mode 100644[m
+[1mindex 0000000..1ba7577[m
+Binary files /dev/null and b/bin/classes/org/codelearn/twitter/TweetAdapter$TweetView.class differ
+[1mdiff --git a/bin/classes/org/codelearn/twitter/TweetAdapter.class b/bin/classes/org/codelearn/twitter/TweetAdapter.class[m
+[1mindex 2a8e9e9..48550d3 100644[m
+Binary files a/bin/classes/org/codelearn/twitter/TweetAdapter.class and b/bin/classes/org/codelearn/twitter/TweetAdapter.class differ
+[1mdiff --git a/bin/classes/org/codelearn/twitter/TweetListActivity.class b/bin/classes/org/codelearn/twitter/TweetListActivity.class[m
+[1mindex fc41c8a..4d55705 100644[m
+Binary files a/bin/classes/org/codelearn/twitter/TweetListActivity.class and b/bin/classes/org/codelearn/twitter/TweetListActivity.class differ
+[1mdiff --git a/bin/dexedLibs/appcompat_v7-ee99e8192266d803b7b7d70f5680668c.jar b/bin/dexedLibs/appcompat_v7-ee99e8192266d803b7b7d70f5680668c.jar[m
+[1mindex 37add99..54c23ce 100644[m
+Binary files a/bin/dexedLibs/appcompat_v7-ee99e8192266d803b7b7d70f5680668c.jar and b/bin/dexedLibs/appcompat_v7-ee99e8192266d803b7b7d70f5680668c.jar differ
+[1mdiff --git a/bin/resources.ap_ b/bin/resources.ap_[m
+[1mindex dbb0ba1..ecb8ff7 100644[m
+Binary files a/bin/resources.ap_ and b/bin/resources.ap_ differ
+[1mdiff --git a/src/org/codelearn/twitter/TweetAdapter.java b/src/org/codelearn/twitter/TweetAdapter.java[m
+[1mindex be737f5..a0a321c 100644[m
+[1m--- a/src/org/codelearn/twitter/TweetAdapter.java[m
+[1m+++ b/src/org/codelearn/twitter/TweetAdapter.java[m
+[36m@@ -2,39 +2,55 @@[m [mpackage org.codelearn.twitter;[m
+ [m
+ import java.util.List;[m
+ [m
+[31m-import org.codelearn.twitter.R.id;[m
+ import org.codelearn.twitter.Model.Tweet;[m
+ [m
+ import android.annotation.SuppressLint;[m
+ import android.app.Activity;[m
+[31m-import android.util.Log;[m
+ import android.view.LayoutInflater;[m
+ import android.view.View;[m
+ import android.view.ViewGroup;[m
+[31m-import android.webkit.WebView.FindListener;[m
+ import android.widget.ArrayAdapter;[m
+[31m-import android.widget.EditText;[m
+[32m+[m[32mimport android.widget.TextView;[m
+ [m
+ @SuppressWarnings("rawtypes")[m
+ public class TweetAdapter extends ArrayAdapter{[m
+ 	[m
+[31m-	private LayoutInflater inflater;[m
+[31m-	private EditText title;[m
+[31m-	private List<Tweet> tweets;[m
+[32m+[m	[32mprivate Activity activity;[m[41m [m
+[32m+[m	[32mprivate List<Tweet> tweet;[m
+ 	@SuppressWarnings("unchecked")[m
+ 	public TweetAdapter(Activity activity , List<Tweet> tweets) {[m
+ 		super(activity,R.layout.row_tweet,tweets);[m
+[31m-		inflater = activity.getWindow().getLayoutInflater();[m
+[32m+[m		[32mthis.activity = activity;[m
+[32m+[m		[32mthis.tweet = tweets;[m
+[32m+[m[41m		[m
+ 	}[m
+ 	@SuppressLint("ViewHolder")[m
+ 	@Override[m
+ 	public View getView(int position, View convertView, ViewGroup parent) {[m
+[31m-		int n = position;[m
+[31m-		title = (EditText) convertView.findViewById(id.tweetTitle);[m
+[31m-		Log.d("title", "title of tweet"+ title);[m
+[31m-		title.setText((CharSequence) tweets.get(n));[m
+[31m-		return inflater.inflate(R.layout.row_tweet, parent, false);[m
+[32m+[m		[32mView rowView =convertView;[m
+[32m+[m		[32mTweetView title = null;[m
+[32m+[m		[32mif(rowView==null){[m
+[32m+[m			[32mLayoutInflater inflator = activity.getLayoutInflater();[m
+[32m+[m			[32mrowView =inflator.inflate(R.layout.row_tweet, null);[m
+[32m+[m			[32mtitle = new TweetView();[m[41m [m
+[32m+[m			[32mtitle.title = (TextView) rowView.findViewById(R.id.tweetTitle);[m
+[32m+[m			[32mtitle.body = (TextView) rowView.findViewById(R.id.tweetBody);[m
+[32m+[m			[32mrowView.setTag(title);[m
+[32m+[m			[32m}else{[m
+[32m+[m				[32mtitle = (TweetView) rowView.getTag();[m
+[32m+[m			[32m}[m
+[32m+[m		[32mTweet currTweet = tweet.get(position);[m
+[32m+[m		[32mtitle.title.setText(currTweet.getTitle().toString());[m
+[32m+[m		[32m//title.body.setText(currTweet.getBody().toString());[m
+[32m+[m		[32mreturn rowView;[m
+[32m+[m[41m		[m
+ 	}	[m
+[32m+[m	[32mprotected static class TweetView {[m
+[32m+[m
+[32m+[m[32m        protected TextView title;[m
+[32m+[m[32m        protected TextView body;[m
+[32m+[m[32m    }[m
+[32m+[m
+ 	[m
+ 	[m
+ [m
+[1mdiff --git a/src/org/codelearn/twitter/TweetListActivity.java b/src/org/codelearn/twitter/TweetListActivity.java[m
+[1mindex 0d8920d..07af254 100644[m
+[1m--- a/src/org/codelearn/twitter/TweetListActivity.java[m
+[1m+++ b/src/org/codelearn/twitter/TweetListActivity.java[m
+[36m@@ -19,19 +19,21 @@[m [mpublic class TweetListActivity extends ListActivity {[m
+ 	private ArrayAdapter<?> tweetItemArrayAdapter;[m
+ 	private List<Tweet> tweets = new ArrayList<Tweet>();[m
+ 	private EditText tweetTitle;[m
+[31m-	private Tweet tweet = new Tweet();[m
+ 	@Override[m
+ 	protected void onCreate(Bundle savedInstanceState) {[m
+ 		super.onCreate(savedInstanceState);[m
+ 		setContentView(R.layout.activity_tweet_list);[m
+[31m-		for (int i = 0; i < 20; i++) {[m
+[31m-			[m
+[32m+[m		[32mfor (int i=0 ; i <= 20; i++) {[m
+[32m+[m			[32mTweet tweet = new Tweet();[m
+[32m+[m			[32mtweet.setId(i+"");[m
+ 			tweet.setTitle("@stormtheh4ck3r Tweet # "+i);[m
+[31m-			tweet.setbody("helllo Tweet #"+i);[m
+[32m+[m			[32mtweet.setbody("helllo Tweet # "+i);[m
+ 			tweets.add(tweet);[m
+ 			[m
+ 		}[m
+[32m+[m		[32mSystem.out.println(tweets);[m
+ 		tweetTitle = (EditText) findViewById(R.id.tweetTitle);[m
+[32m+[m		[32mEditText tweetbody = (EditText) findViewById(R.id.tweetBody);[m
+ 		tweetItemArrayAdapter = new TweetAdapter(this,tweets);[m
+ 		setListAdapter(tweetItemArrayAdapter);[m
+ 		[m

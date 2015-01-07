@@ -40,8 +40,9 @@ public class TweetAdapter extends ArrayAdapter{
 				title = (TweetView) rowView.getTag();
 			}
 		Tweet currTweet = tweet.get(position);
+		System.out.println("BODY  =="+currTweet.getBody().toString());
 		title.title.setText(currTweet.getTitle().toString());
-		//title.body.setText(currTweet.getBody().toString());
+		title.body.setText(currTweet.getBody().toString());
 		return rowView;
 		
 	}	
