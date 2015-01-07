@@ -30,17 +30,24 @@ public class TweetAdapter extends ArrayAdapter{
 		View rowView =convertView;
 		TweetView title = null;
 		if(rowView==null){
+			// Get a new instance of the row layout view
 			LayoutInflater inflator = activity.getLayoutInflater();
 			rowView =inflator.inflate(R.layout.row_tweet, null);
+			// Hold the view objects in an object,
+            // so they don't need to be re-fetched
 			title = new TweetView(); 
 			title.title = (TextView) rowView.findViewById(R.id.tweetTitle);
 			title.body = (TextView) rowView.findViewById(R.id.tweetBody);
+			// Cache the view objects in the tag,
+            // so they can be re-accessed later
 			rowView.setTag(title);
 			}else{
 				title = (TweetView) rowView.getTag();
 			}
+		
+		// Transfer the stock data from the data object
+        // to the view objects
 		Tweet currTweet = tweet.get(position);
-		System.out.println("BODY  =="+currTweet.getBody().toString());
 		title.title.setText(currTweet.getTitle().toString());
 		title.body.setText(currTweet.getBody().toString());
 		return rowView;
