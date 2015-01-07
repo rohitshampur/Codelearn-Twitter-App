@@ -19,19 +19,21 @@ public class TweetListActivity extends ListActivity {
 	private ArrayAdapter<?> tweetItemArrayAdapter;
 	private List<Tweet> tweets = new ArrayList<Tweet>();
 	private EditText tweetTitle;
-	private Tweet tweet = new Tweet();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tweet_list);
-		for (int i = 0; i < 20; i++) {
-			
+		for (int i=0 ; i <= 20; i++) {
+			Tweet tweet = new Tweet();
+			tweet.setId(i+"");
 			tweet.setTitle("@stormtheh4ck3r Tweet # "+i);
-			tweet.setbody("helllo Tweet #"+i);
+			tweet.setbody("helllo Tweet # "+i);
 			tweets.add(tweet);
 			
 		}
+		System.out.println(tweets);
 		tweetTitle = (EditText) findViewById(R.id.tweetTitle);
+		EditText tweetbody = (EditText) findViewById(R.id.tweetBody);
 		tweetItemArrayAdapter = new TweetAdapter(this,tweets);
 		setListAdapter(tweetItemArrayAdapter);
 		

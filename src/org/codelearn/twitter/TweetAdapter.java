@@ -2,39 +2,55 @@ package org.codelearn.twitter;
 
 import java.util.List;
 
-import org.codelearn.twitter.R.id;
 import org.codelearn.twitter.Model.Tweet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.widget.TextView;
 
 @SuppressWarnings("rawtypes")
 public class TweetAdapter extends ArrayAdapter{
 	
-	private LayoutInflater inflater;
-	private EditText title;
-	private List<Tweet> tweets;
+	private Activity activity; 
+	private List<Tweet> tweet;
 	@SuppressWarnings("unchecked")
 	public TweetAdapter(Activity activity , List<Tweet> tweets) {
 		super(activity,R.layout.row_tweet,tweets);
-		inflater = activity.getWindow().getLayoutInflater();
+		this.activity = activity;
+		this.tweet = tweets;
+		
 	}
 	@SuppressLint("ViewHolder")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		int n = position;
-		title = (EditText) convertView.findViewById(id.tweetTitle);
-		Log.d("title", "title of tweet"+ title);
-		title.setText((CharSequence) tweets.get(n));
-		return inflater.inflate(R.layout.row_tweet, parent, false);
+		View rowView =convertView;
+		TweetView title = null;
+		if(rowView==null){
+			LayoutInflater inflator = activity.getLayoutInflater();
+			rowView =inflator.inflate(R.layout.row_tweet, null);
+			title = new TweetView(); 
+			title.title = (TextView) rowView.findViewById(R.id.tweetTitle);
+			title.body = (TextView) rowView.findViewById(R.id.tweetBody);
+			rowView.setTag(title);
+			}else{
+				title = (TweetView) rowView.getTag();
+			}
+		Tweet currTweet = tweet.get(position);
+		title.title.setText(currTweet.getTitle().toString());
+		//title.body.setText(currTweet.getBody().toString());
+		return rowView;
+		
 	}	
+	protected static class TweetView {
+
+        protected TextView title;
+        protected TextView body;
+    }
+
 	
 	
 
