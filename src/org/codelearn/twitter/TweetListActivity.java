@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class TweetListActivity extends ListActivity {
 	
@@ -24,11 +25,12 @@ public class TweetListActivity extends ListActivity {
 	private List<Tweet> tweets = new ArrayList<Tweet>();
 	private List<Tweet> tweetsRead = new ArrayList<Tweet>(); 
 	public static final String TWEETS_CACHE = "tweets_cache.ser";
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tweet_list);
-		for (int i=0 ; i <= 20; i++) {
+		/*for (int i=0 ; i <= 20; i++) {
 			Tweet tweet = new Tweet();
 			tweet.setId(i+"");
 			tweet.setTitle("@stormtheh4ck3r Tweet # "+i);
@@ -36,7 +38,7 @@ public class TweetListActivity extends ListActivity {
 			tweets.add(tweet);
 			
 		}
-		System.out.println(tweets);
+		System.out.println(tweets);*/
 		FileInputStream fis = null;
 		ObjectInputStream ois = null;
 		try{
@@ -55,7 +57,7 @@ public class TweetListActivity extends ListActivity {
 			}
 		}
 		
-		try {
+	/*	try {
 			FileOutputStream fos = openFileOutput(TWEETS_CACHE, MODE_PRIVATE);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(tweets);
@@ -67,15 +69,52 @@ public class TweetListActivity extends ListActivity {
 			e.printStackTrace();
 		} 
 		tweetItemArrayAdapter = new TweetAdapter(this,tweetsRead);
-		setListAdapter(tweetItemArrayAdapter);
+		setListAdapter(tweetItemArrayAdapter);*/
+		renderTweet();
 		
+		
+	}
+	@SuppressWarnings("unchecked")
+	public List<Tweet> renderTweet(){
+		FileInputStream fis = null;
+		ObjectInputStream ois = null;
+		try{
+			fis = openFileInput(TWEETS_CACHE);
+			ois = new ObjectInputStream(fis);
+			tweetsRead = (List<Tweet>)ois.readObject();
+			Log.d("codelearn", "Successfully read tweets to the file.");
+		}catch(Exception e){
+			Log.e("codelearn", "Error reading to file");
+		}finally{
+			try{
+			ois.close();
+			fis.close();
+			}catch(Exception e){
+				
+			}
+		}
+		
+		tweetItemArrayAdapter = new TweetAdapter(this,tweetsRead);
+		setListAdapter(tweetItemArrayAdapter);
+		return tweetsRead;
 		
 	}
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
+		
+		
+		List<Tweet> tw = renderTweet();
+		Tweet currTweet = tw.get(position);
+		Log.d("codelearn", "onItemClickListner() "+currTweet);
 		Intent intent = new Intent(this, TweetDetailActivity.class);
+		intent.putExtra("currentTweet", currTweet);
 		startActivity(intent);
 	}
+	protected static class TweetdetailsView {
+
+        protected TextView title;
+        protected TextView body;
+    }
 
 	
 }

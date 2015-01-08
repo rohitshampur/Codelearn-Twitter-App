@@ -2,6 +2,7 @@ package org.codelearn.twitter;
 
 import java.util.List;
 
+import org.codelearn.twitter.MainActivity.AsyncFetchTweets;
 import org.codelearn.twitter.Model.Tweet;
 
 import android.annotation.SuppressLint;
@@ -22,8 +23,7 @@ public class TweetAdapter extends ArrayAdapter{
 		super(activity,R.layout.row_tweet,tweets);
 		this.activity = activity;
 		this.tweet = tweets;
-		
-	}
+		}
 	@SuppressLint("ViewHolder")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
